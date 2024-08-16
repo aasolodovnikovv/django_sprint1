@@ -46,21 +46,21 @@ posts = [
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    """Обрабатывает запрос к главной странице."""
+    """Главная страница."""
     template_name: str = 'blog/index.html'
     context: dict = {'posts': posts[::-1]}
     return render(request, template_name, context)
 
 
 def category_posts(request: HttpRequest, category_slug: str) -> HttpResponse:
-    """Обрабатывает запрос к странице категории."""
+    """Страница категории."""
     template_name: str = 'blog/category.html'
     context: dict = {'category_slug': category_slug}
     return render(request, template_name, context)
 
 
 def post_detail(request: HttpRequest, id: int) -> HttpResponse:
-    """Обрабатывает запрос к порядковому номеру."""
+    """Порядковый номер."""
     template_name: str = 'blog/detail.html'
     context: dict = {'post': posts[id]}
     return render(request, template_name, context)
