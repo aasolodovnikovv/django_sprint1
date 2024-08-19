@@ -1,29 +1,23 @@
 {% extends 'base.html' %}
+{% with request.resolver_match.view_name as view_name %}
 {% block title %}Лента записей{% endblock %}
 {% block content %}
   <h1>Лента записей</h1>
-  <!-- Перебираем в цикле все посты -->                        
-  {% for post in posts %}
+  <!-- Перебираем в цикле все посты -->
+  {% for post in posts reversed %}                        
     {% if not forlooplast %}
       <hr>
     {% endif %}
     <article>
-      <ul>
-        <li>
-          Место: {{ post.location }}              
-        </li>
-        <li>
-          Дата: {{ post.date }}
-        </li>
-        <li>
-          Категория: <a href="{% url 'blog:category_posts' post.category %}">{{ post.category }}</a>
-        </li>
-      </ul>          
+      {% include "includes/post.html" %}       
       <!-- Первые 10 слов -->
       <p>
-        {{ post.text|truncatewords:10 }}
+        {% if view_name == 'blog:index' %}
+          {{ post.text|truncatewords:10 }}{% endif %}
       </p>
-      <a href="{% url 'blog:post_detail' post.id %}">Читать полный текст</a>
+      <a href="{% url 'blog:post_detail' post.id %}">
+        Читать полный текст</a>
     </article>  
   {% endfor %}
 {% endblock %}
+{% endwith %}

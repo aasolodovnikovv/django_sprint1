@@ -1,7 +1,10 @@
-from django.http import HttpRequest, HttpResponse
+from typing import List
+
+from django.http import HttpRequest, HttpResponse, Http404
 from django.shortcuts import render
 
-posts = [
+
+posts: List = [
     {
         'id': 0,
         'location': 'Остров отчаянья',
@@ -44,23 +47,24 @@ posts = [
     },
 ]
 
+post_dict: dict = {post['id']: post for post in posts}
+
 
 def index(request: HttpRequest) -> HttpResponse:
     """Главная страница."""
-    template_name: str = 'blog/index.html'
-    context: dict = {'posts': posts[::-1]}
-    return render(request, template_name, context)
+    return render(request, 'blog/index.html', {'posts': posts})
 
 
 def category_posts(request: HttpRequest, category_slug: str) -> HttpResponse:
     """Страница категории."""
-    template_name: str = 'blog/category.html'
-    context: dict = {'category_slug': category_slug}
-    return render(request, template_name, context)
+    return render(request, 'blog/category.html',
+                  {'category_slug': category_slug})
 
 
-def post_detail(request: HttpRequest, id: int) -> HttpResponse:
+def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
     """Порядковый номер."""
-    template_name: str = 'blog/detail.html'
-    context: dict = {'post': posts[id]}
-    return render(request, template_name, context)
+    if post_id not in post_dict:
+        raise Http404('Страница не существует.')
+    else:
+        return render(request, 'blog/detail.html',
+                      {'post': post_dict[post_id]})
