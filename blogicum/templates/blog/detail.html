@@ -1,10 +1,5 @@
 {% extends 'base.html' %}
 {% block title %}{{ post.location }}. {{ post.date }}{% endblock %}
 {% block content %}
-  <article>
-    {% include "includes/post.html" %}     
-    <p>
-      {{ post.text|linebreaksbr }}
-    </p>          
-  </article>                
+  {% include "includes/post.html" %}
 {% endblock %}
