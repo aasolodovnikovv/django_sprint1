@@ -1,10 +1,10 @@
-from typing import List
+from typing import List, Union
 
 from django.http import HttpRequest, HttpResponse, Http404
 from django.shortcuts import render
 
 
-posts: List = [
+posts: List[dict[str, Union[int, str]]] = [
     {
         'id': 0,
         'location': 'Остров отчаянья',
@@ -47,7 +47,7 @@ posts: List = [
     },
 ]
 
-post_dict: dict = {post['id']: post for post in posts}
+publications: dict = {post['id']: post for post in posts}
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -63,8 +63,7 @@ def category_posts(request: HttpRequest, category_slug: str) -> HttpResponse:
 
 def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
     """Порядковый номер."""
-    if post_id not in post_dict:
+    if post_id not in publications:
         raise Http404('Страница не существует.')
-    else:
-        return render(request, 'blog/detail.html',
-                      {'post': post_dict[post_id]})
+    return render(request, 'blog/detail.html', 
+                  {'post': publications[post_id]})
