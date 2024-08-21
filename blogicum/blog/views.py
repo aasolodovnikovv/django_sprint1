@@ -65,5 +65,5 @@ def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
     """Порядковый номер."""
     if post_id not in publications:
         raise Http404('Страница не существует.')
-    return render(request, 'blog/detail.html', 
+    return render(request, 'blog/detail.html',
                   {'post': publications[post_id]})
